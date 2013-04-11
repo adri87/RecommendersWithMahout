@@ -1,0 +1,6 @@
+jdbc:mysql://localhost:3306/mahout
+com.mysql.jdbc.Driver
+localhost
+mahout
+mahoutu
+mahoutp

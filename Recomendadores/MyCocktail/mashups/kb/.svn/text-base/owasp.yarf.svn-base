@@ -1,0 +1,208 @@
+dc: http://purl.org/dc/elements/1.1/
+owl: http://www.w3.org/2002/07/owl#
+rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+rdfs: http://www.w3.org/2000/01/rdf-schema#
+sioc: http://rdfs.org/sioc/ns#
+sc: http://lab.gsi.dit.upm.es/scraping.rdf#
+vu: http://vulneranet.org/vulneranet.owl#
+ow: http://www.owasp.org/index.php/
+
+# Main page (redirected from http://www.owasp.org)
+
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.owasp.org/index.php/Main_Page"
+  sc:subfragment:
+    *:
+      sc:type: sc:Index
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "a"
+          sc:keyword:
+            "threat agents"
+            "attacks"
+            "vulnerabilities"
+            "controls"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+
+# Some statements
+*:
+  rdf:type: sc:Fragment
+  sc:sameas: vu:Vulnerability
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.owasp.org/index.php/Category:Vulnerability"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+*:
+  rdf:type: sc:Fragment
+  sc:sameas: vu:Threat
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.owasp.org/index.php/Category:Attack"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+*:
+  rdf:type: sc:Fragment
+  sc:sameas: vu:Control
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.owasp.org/index.php/Category:Control"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+
+# Categories
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://www.owasp.org/index.php/Category:*"
+  sc:subfragment:
+    *:
+      sc:type: rdf:Resource
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "#bodyContent #mw-subcategories a.CategoryTreeLabel"
+      sc:identifier:
+        *:
+          rdf:type: sc:XPathSelector
+          rdf:value: "./."
+          sc:attribute: "href"
+      sc:subfragment:
+        *:
+          sc:relation: rdfs:label
+          sc:type: rdf:Literal
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+        *:
+          sc:relation: rdfs:subClassOf
+          sc:type: rdf:Resource
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+          sc:identifier:
+            *:
+              rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type: rdf:Resource
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "#bodyContent #mw-pages a"
+      sc:identifier:
+        *:
+          rdf:type: sc:XPathSelector
+          rdf:value: "./."
+          sc:attribute: "href"
+      sc:subfragment:
+        *:
+          sc:relation: rdfs:label
+          sc:type: rdf:Literal
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+        *:
+          sc:relation: rdf:type
+          sc:type: rdf:Resource
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+          sc:identifier:
+            *:
+              rdf:type: sc:BaseUriSelector
+
+# Vulnerabilities, controls and threats
+
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://www.owasp.org/index.php/*"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type: rdf:Literal
+      sc:selector:
+        *:
+          rdf:type: sc:SectionSelector
+          rdf:value: "description"
+      sc:relation: dc:description
+    *:
+      sc:type: rdf:Literal
+      sc:selector:
+        *:
+          rdf:type: sc:SectionSelector
+          rdf:value: "risk factors"
+      sc:relation: vu:factor
+    *:
+      sc:type: rdf:Literal
+      sc:selector:
+        *:
+          rdf:type: sc:SectionSelector
+          rdf:value: "examples"
+      sc:relation: vu:example
+    *:
+      sc:selector:
+        *:
+          rdf:type: sc:SectionSelector
+          rdf:value: "related attacks"
+          sc:selector:
+            *:
+              rdf:type: sc:CssSelector
+              rdf:value: ".//a[@href and not(@class='new')]"
+      sc:identifier:
+        *:
+          rdf:type: sc:XPathSelector
+          rdf:value: "./."
+          sc:attribute: "href"
+      sc:relation: vu:attack
+    *:
+      sc:selector:
+        *:
+          rdf:type: sc:SectionSelector
+          rdf:value: "related vulnerabilities"
+          sc:selector:
+            *:
+              rdf:type: sc:CssSelector
+              rdf:value: ".//a[@href and not(@class='new')]"
+      sc:identifier:
+        *:
+          rdf:type: sc:XPathSelector
+          rdf:value: "./."
+          sc:attribute: "href"
+      sc:relation: vu:vulnerability
+    *:
+      sc:selector:
+        *:
+          rdf:type: sc:SectionSelector
+          rdf:value: "related controls"
+          sc:selector:
+            *:
+              rdf:type: sc:CssSelector
+              rdf:value: ".//a[@href and not(@class='new')]"
+      sc:identifier:
+        *:
+          rdf:type: sc:XPathSelector
+          rdf:value: "./."
+          sc:attribute: "href"
+      sc:relation: vu:control

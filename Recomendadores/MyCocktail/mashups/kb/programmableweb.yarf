@@ -1,0 +1,327 @@
+dc: http://purl.org/dc/elements/1.1/
+owl: http://www.w3.org/2002/07/owl#
+rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+rdfs: http://www.w3.org/2000/01/rdf-schema#
+sioc: http://rdfs.org/sioc/ns#
+sc: http://lab.gsi.dit.upm.es/scraping.rdf#
+vu: http://vulneranet.org/vulneranet.owl#
+om: http://www.ict-omelette.eu/schema.rdf#
+ctag: http://commontag.org/ns#
+
+# Main page
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.programmableweb.com/"
+  sc:subfragment:
+    *:
+      sc:type: sc:Index
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "dt"
+          sc:keyword: "apis"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+              sc:keyword: "api directory"
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "dt"
+          sc:keyword: "mashups"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+              sc:keyword: "directory"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+
+# API directory
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.programmableweb.com/apis/directory"
+  sc:subfragment:
+    *:
+      sc:type: om:Component
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "table#apis tr td a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+
+# Mashups directory
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.programmableweb.com/mashups/directory"
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://www.programmableweb.com/mashups/directory/*"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type: om:Mashup
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "table#mashups tr td[2] a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+    *:
+      sc:type: sc:Page
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "a"
+          sc:keyword: "next"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+
+# API page
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://www.programmableweb.com/api/*"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type: rdf:Literal
+      sc:relation: rdfs:label
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "h1"
+    *:
+      sc:type: rdf:Literal
+      sc:relation: dc:description
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".profile div div p"
+          sc:index: "0"
+    *:
+      sc:relation: rdf:type
+      sc:superclass: om:Component
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".profile div div dl dt"
+          sc:keyword: "category"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:NewUriSelector
+          sc:prefix: http://www.ict-omelette.eu/schema.rdf#
+      sc:subfragment:
+        *:
+          sc:type: rdf:Literal
+          sc:relation: rdfs:label
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+    *:
+      sc:relation: om:data_format
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".profile div div dl dt"
+          sc:keyword: "data formats"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:NewUriSelector
+          sc:prefix: http://www.ict-omelette.eu/schema.rdf#
+      sc:subfragment:
+        *:
+          sc:type: rdf:Literal
+          sc:relation: rdfs:label
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+    *:
+      sc:relation: om:provider
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".profile div div dl dt"
+          sc:keyword: "provider"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+    *:
+      sc:relation: om:terms
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".profile div div dl dt"
+          sc:keyword: "terms of service"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+    *:
+      sc:relation: om:authentication
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".profile div div dl dt"
+          sc:keyword: "authentication model"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:NewUriSelector
+          sc:prefix: http://www.ict-omelette.eu/schema.rdf#
+      sc:subfragment:
+        *:
+          sc:type: rdf:Literal
+          sc:relation: rdfs:label
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+    *:
+      sc:type: ctag:Tag
+      sc:relation: ctag:tagged
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".profile div div dl dt"
+          sc:keyword: "tags"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:NewUriSelector
+          sc:prefix: http://www.ict-omelette.eu/schema.rdf#
+          sc:suffix: "Tag"
+      sc:subfragment:
+        *:
+          sc:type: rdf:Literal
+          sc:relation: rdfs:label
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+
+# Mashup page
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://www.programmableweb.com/mashup/*"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type: rdf:Literal
+      sc:relation: rdfs:label
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "h1"
+    *:
+      sc:type: rdf:Literal
+      sc:relation: dc:description
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "p"
+          sc:index: "0"
+    *:
+      sc:relation: om:api
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "dl.inline dt"
+          sc:keyword: "apis"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+    *:
+      sc:type: ctag:Tag
+      sc:relation: ctag:tagged
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "dl.inline dt"
+          sc:keyword: "tags"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:NewUriSelector
+          sc:prefix: http://www.ict-omelette.eu/schema.rdf#
+          sc:suffix: "Tag"
+      sc:subfragment:
+        *:
+          sc:type: rdf:Literal
+          sc:relation: rdfs:label
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+    *:
+      sc:relation: owl:sameAs
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "dl.inline dt"
+          sc:keyword: "url"
+          sc:selector:
+            *:
+              rdf:type: sc:XPathSelector
+              rdf:value: "./../dd/a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"

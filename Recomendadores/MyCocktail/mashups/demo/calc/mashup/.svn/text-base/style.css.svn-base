@@ -1,0 +1,115 @@
+#wrapper{
+padding: 20px;
+margin-top: 10px;
+
+}
+
+#content{
+margin-left: 200px;
+float: center;
+
+}
+
+.gsiLogo{
+height: 71px;
+width: 80px;
+float:right;
+margin-right: 50px;
+margin-bottom: 20px;
+}
+
+.alacartaLogo{
+float:left;
+height: 20%;
+width: 20%;
+margin-left: 50px;
+}
+
+
+
+ul.tabs {
+padding: 0;
+float: left;
+list-style: none;
+height: 32px; /*--Define el ancho de las tabs--*/
+
+width: 100%;
+}
+
+ul.tabs li {
+float: left;
+margin: 0;
+padding: 0;
+height: 31px; /*--Sustrae 1px de la altura de la lista desordenada--*/
+line-height: 31px; /*--Alineamiento vertical del texto dentro de la tabla--*/
+border: 1px solid #999;
+
+margin-bottom: -1px; /*--Desplaza los item de la lista abajo 1px--*/
+overflow: hidden;
+position: relative;
+background: #054B6E;
+}
+
+ul.tabs li a {
+text-decoration: none;
+color: #87C6D2;
+display: block;
+font-size: 1.2em;
+padding: 0 20px;
+border: 1px solid #fff;
+}
+
+ul.tabs li a:hover {
+background: #0B3C69;
+color: #FFFFFF;
+}
+
+html ul.tabs li.active, html ul.tabs li.active a:hover  { 
+background: #06064E;
+border-bottom: 1px solid #fff; 
+}
+
+
+
+.tab_container {
+border-top: none;
+overflow: hidden;
+clear: both;
+
+background: #fff;
+}
+
+.tab_content {
+font-size: 1.2em;
+display: inline;
+}
+
+.title{
+color: #086FA1;
+font-size: 14;
+}
+
+.graphicsAuthors{
+
+float: left;
+
+}
+.graphicsCategories{
+float: right;
+margin-right: 80px;
+
+}
+
+.graphicsComments{
+float:right;
+margin-right: 80px;
+padding: 40px;
+}
+
+.graphicsMap{
+float: left;
+
+
+
+
+}

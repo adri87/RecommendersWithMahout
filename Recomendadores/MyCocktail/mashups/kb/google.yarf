@@ -1,0 +1,120 @@
+dc: http://purl.org/dc/elements/1.1/
+owl: http://www.w3.org/2002/07/owl#
+rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+sioc: http://rdfs.org/sioc/ns#
+ms: http://lab.gsi.dit.upm.es/microservices/schema.rdf#
+sc: http://lab.gsi.dit.upm.es/scraping.rdf#
+loc: http://www.daml.org/experiment/ontology/location-ont#
+
+_:google:
+  rdf:type:  sc:Fragment
+  sc:selector:
+    *:
+      rdf:type:  sc:UriSelector
+      rdf:value: "http://www.google.com/"
+      rdf:value: "http://www.google.es/"
+  sc:identifier:
+    *:
+      rdf:type:  sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type:      ms:LoginPage
+      sc:selector:
+        *:
+          rdf:type:  sc:XPathSelector
+          rdf:value: "//a[@class='gb4'][2]"
+      sc:identifier:
+        *:
+          rdf:type:  sc:XPathSelector
+          rdf:value: "./."
+          sc:attribute: "href"
+    *:
+      sc:relation:  ms:service
+      sc:type:      ms:SearchService
+      sc:selector:
+        *:
+          rdf:type:  sc:XPathSelector
+          rdf:value: "//form"
+      sc:identifier:
+        *:
+          rdf:type:  sc:XPathSelector
+          rdf:value: "./."
+          sc:attribute: "action"
+      sc:subfragment:
+        *:
+          sc:type:      ms:Keywords
+          sc:relation: ms:input
+          sc:selector:
+            *:
+              rdf:type:  sc:XPathSelector
+              rdf:value: "input.lst"
+
+_:googlelogin:
+  rdf:type:  sc:UriPatternSelector
+  rdf:value: "https://www.google.com/accounts/Login*"
+  sc:generator:
+    *:
+      sc:type:      ms:LoginPage
+  sc:selector:
+    *:
+      rdf:type:  sc:XPathSelector
+      rdf:value: "//form[1]"
+      sc:identifier:
+        *:
+          rdf:type:  sc:XPathSelector
+          rdf:value: "./."
+          sc:attribute: "action"
+      sc:generator:
+        *:
+          sc:predicate: ms:service
+          sc:type:      ms:LoginService
+      sc:selector:
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:value: "input#Email"
+          sc:identifier:
+            *:
+              rdf:type:  sc:NullSelector
+          sc:generator:
+            *:
+              sc:predicate: ms:input
+              sc:type:      ms:UserName
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:value: "input#Passwd"
+          sc:identifier:
+            *:
+              rdf:type:  sc:NullSelector
+          sc:generator:
+            *:
+              sc:predicate: ms:input
+              sc:type:      ms:Password
+
+
+_:googlesearch:
+  rdf:type:  sc:UriPatternSelector
+  rdf:value: "http://www.google.com/search"
+  sc:selector:
+    *:
+      rdf:type:  sc:CssSelector
+      rdf:type:  sc:Selector
+      rdf:value: "li.g"
+      sc:identifier:
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:type:  sc:Selector
+          rdf:value: "a.l"
+          sc:attribute: "href"
+      sc:generator:
+        *:
+          sc:predicate: wui:search_result
+          sc:type:      wui:SearchResult
+      sc:selector:
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:type:  sc:Selector
+          rdf:value: "a.l"
+          sc:generator:
+            *:
+              sc:predicate: dc:title
+              sc:type:      rdf:Literal

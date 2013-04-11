@@ -1,0 +1,82 @@
+dc: http://purl.org/dc/elements/1.1/
+owl: http://www.w3.org/2002/07/owl#
+rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+sioc: http://rdfs.org/sioc/ns#
+sc: http://lab.gsi.dit.upm.es/scraping.rdf#
+
+_:20minutosindice:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.20minutos.es/"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type: sioc:Post
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "a.title"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+      sc:subfragment:
+        *:
+          sc:type:     rdf:Literal
+          sc:relation: dc:title
+          sc:selector:
+            *:
+              rdf:type:  sc:RootSelector
+
+
+_:20minutosnoticia:
+  rdf:type: sc:Fragment
+  sc:type: sioc:Post
+  sc:selector:
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://www.20minutos.es/*"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:creator
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "li.author .avatar-link"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:title
+      sc:selector:
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:value: "h3.article-title"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:comment
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "span.comments-wrapper"
+          sc:index: "0"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:category
+      sc:selector:
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:value: "h2.section-name"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:descripion
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".lead"

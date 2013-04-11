@@ -1,0 +1,131 @@
+dc: http://purl.org/dc/elements/1.1/
+owl: http://www.w3.org/2002/07/owl#
+rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+sioc: http://rdfs.org/sioc/ns#
+sc: http://lab.gsi.dit.upm.es/scraping.rdf#
+loc: http://www.daml.org/experiment/ontology/location-ont#
+
+_:larazonindice:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://www.larazon.es/"
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://larazon.es/"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type: sioc:Post
+      sc:selector:
+        *:
+          rdf:type: sc:XPathSelector
+          rdf:value: "#sort1 li .noticias_destacadas .noticia [1] .titulo_destacado,#sort1 li .noticias_destacadas .noticia [2] .titulo_destacado,#sort2 li .noticias_destacadas .noticia [1] .titulo_destacado,#sort2 li .noticias_destacadas .noticia [2] .titulo_destacado"
+      sc:identifier:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "a"
+          sc:attribute: "href"
+      sc:subfragment:
+        *:
+          sc:type:     rdf:Literal
+          sc:relation: dc:title
+          sc:selector:
+            *:
+              rdf:type:  sc:CssSelector
+              rdf:value: "a"
+
+_:larazonnoticia:
+  rdf:type: sc:Fragment
+  sc:type: sioc:Post
+  sc:selector:
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://www.larazon.es/*"
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://larazon.es/*"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:creator
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".txt .fecha"
+          sc:selector:
+            *:
+              rdf:type: sc:SliceSelector
+              rdf:value: "-"
+              sc:index:  "2"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:title
+      sc:selector:
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:value: ".noticia .txt h2"
+    *:
+      sc:type:     loc:Location
+      sc:relation: loc:location
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector          
+          rdf:value: ".txt .fecha"         
+      sc:subfragment:
+        *:
+          sc:type:      rdf:Literal
+          sc:relation: rdf:label
+          sc:selector:
+            *:
+              rdf:type:  sc:RootSelector              
+              sc:type: rdf:Literal
+              sc:selector:
+                *:
+                  rdf:type: sc:SliceSelector
+                  rdf:value: "-"
+                  sc:index:  "1"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:date
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".txt .fecha"
+          sc:selector:
+            *:
+              rdf:type: sc:SliceSelector
+              rdf:value: "-"
+              sc:index:  "0"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:description
+      sc:selector:
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:value: ".txt .cintillo"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:category
+      sc:selector:
+        *:
+          rdf:type:  sc:CssSelector
+          rdf:value: ".list_busqueda span a"
+    *:
+      sc:type:     rdf:Literal
+      sc:relation: dc:comment
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".num-comentarios-izq a [2]"
+          sc:selector:
+            *:
+              rdf:type: sc:SliceSelector
+              rdf:value: " "
+              sc:index:  "0"

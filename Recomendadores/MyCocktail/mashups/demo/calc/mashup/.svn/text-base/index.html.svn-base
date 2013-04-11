@@ -1,0 +1,360 @@
+<html>
+
+<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="tabs.js"></script>
+
+<script type="text/javascript" src="http://lab.gsi.dit.upm.es/MyCocktail/js/afrous/afrous-config.js"></script>
+<script type="text/javascript" src="http://lab.gsi.dit.upm.es/MyCocktail/js/afrous/afrous-core.js"></script>
+<script type="text/javascript" src="http://lab.gsi.dit.upm.es/MyCocktail/js/afrous/afrous-package.js"></script>
+<script type="text/javascript" src="http://lab.gsi.dit.upm.es/MyCocktail/js/afrous/packages/alacarta.js"></script>
+<script type="text/javascript" src="http://lab.gsi.dit.upm.es/MyCocktail/js/afrous/renderers/graphics.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+//It makes a pie Chart with the authors
+function authors( webPage, div ){
+  var procdef = new afrous.ProcessDef({"name":"","description":"","params":[],"output":"${pienewextractor}","actions":[{"type":"Services.Alacarta.Noticias","name":"noticias","inputs":{"url_entrada":webPage}},{"type":"Renderer.Diagram.PieNewExtractor","name":"pienewextractor","inputs":{"records":"${noticias}"}}]});
+  var proc = new afrous.ProcessInstance(procdef);
+
+  proc.start(function(result) {
+    result.render(document.getElementById(div));
+  })
+}
+
+//It makes a pie Chart with the categories: health, sports, national, tv, people, science, culture, international, economy, travels//
+
+function categories( webPage, div ){
+  var procdef = new afrous.ProcessDef({"name":"","description":"","params":[],"output":"${piecategories}","actions":[{"type":"Services.Alacarta.Noticias","name":"noticias","inputs":{"url_entrada":webPage}},{"type":"Renderer.Diagram.PieCategories","name":"piecategories","inputs":{"records":"${noticias}"}}]});
+  var proc = new afrous.ProcessInstance(procdef);
+
+  proc.start(function(result) {
+    result.render(document.getElementById(div));
+  })
+}
+
+//A typical google map with the news
+function map( webPage, div){
+  var procdef = new afrous.ProcessDef({"name":"","description":"","params":[],"output":"${googlemapsmarker}","actions":[{"type":"Services.Alacarta.Noticias","name":"noticias","inputs":{"url_entrada":webPage}},{"type":"Renderer.GoogleMaps.GoogleMapsMarker","name":"googlemapsmarker","inputs":{"records":"${noticias}","width":"450","height":"300","labelField":"http://purl.org/dc/elements/1.1/title","valueField":"http://www.daml.org/experiment/ontology/location-ont#location","zoomController":"true","mapTypeController":"true","mapType":"Normal"}}]});
+  var proc = new afrous.ProcessInstance(procdef);
+
+
+  proc.start(function(result) {
+    result.render(document.getElementById(div));
+  })
+}
+
+//It creates a bar char with whith the comments written
+function comments( webPage, div ){
+  var procdef = new afrous.ProcessDef({"name":"","description":"","params":[],"output":"${barchartcomments}","actions":[{"type":"Services.Alacarta.Noticias","name":"noticias","inputs":{"url_entrada":webPage}},{"type":"Renderer.Diagram.BarChartComments","name":"barchartcomments","inputs":{"records":"${noticias}","width":"300","height":"320"}}]});
+  var proc = new afrous.ProcessInstance(procdef);
+
+  proc.start(function(result) {
+    result.render(document.getElementById(div));
+  })
+}
+
+
+//The same but for all newspapers at the same time
+function authorsAll( div){
+  var procdef = new afrous.ProcessDef({"name":"","description":"","params":[],"output":"${pienewextractor}","actions":[{"type":"Services.Alacarta.Noticias","name":"noticiascategorias","inputs":{"url_entrada":"http://www.elmundo.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias1","inputs":{"url_entrada":"www.elpais.com"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias2","inputs":{"url_entrada":"www.larazon.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias3","inputs":{"url_entrada":"www.abc.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias4","inputs":{"url_entrada":"www.20minutos.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias5","inputs":{"url_entrada":"www.adn.es"}},{"type":"Array.Concat","name":"concat","inputs":{"array1":"${noticiascategorias5}","array2":"${noticiascategorias4}"}},{"type":"Array.Concat","name":"concat1","inputs":{"array1":"${concat}","array2":"${noticiascategorias}","array3":"${noticiascategorias1}","array4":"${noticiascategorias2}","array5":"${noticiascategorias3}"}},{"type":"Renderer.Diagram.PieNewExtractor","name":"pienewextractor","inputs":{"records":"${concat1}"}}]});
+  var proc = new afrous.ProcessInstance(procdef);
+
+  proc.start(function(result) {
+    result.render(document.getElementById(div));
+  })
+
+}  
+
+function categoriesAll(){
+  var procdef = new afrous.ProcessDef({"name":"","description":"","params":[],"output":"${pienewextractor}","actions":[{"type":"Services.Alacarta.Noticias","name":"noticiascategorias","inputs":{"url_entrada":"http://www.elmundo.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias1","inputs":{"url_entrada":"www.elpais.com"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias2","inputs":{"url_entrada":"www.larazon.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias3","inputs":{"url_entrada":"www.abc.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias4","inputs":{"url_entrada":"www.20minutos.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias5","inputs":{"url_entrada":"www.adn.es"}},{"type":"Array.Concat","name":"concat","inputs":{"array1":"${noticiascategorias5}","array2":"${noticiascategorias4}"}},{"type":"Array.Concat","name":"concat1","inputs":{"array1":"${concat}","array2":"${noticiascategorias}","array3":"${noticiascategorias1}","array4":"${noticiascategorias2}","array5":"${noticiascategorias3}"}},{"type":"Renderer.Diagram.PieCategories","name":"pienewextractor","inputs":{"records":"${concat1}"}}]});
+  var proc = new afrous.ProcessInstance(procdef);
+
+  proc.start(function(result) {
+    result.render(document.getElementById("mydiv"));
+  })
+
+}
+
+function mapAll(){
+  var procdef = new afrous.ProcessDef({"name":"","description":"","params":[],"output":"${googlemapsmarker}","actions":[{"type":"Services.Alacarta.Noticias","name":"noticiascategorias","inputs":{"url_entrada":"http://www.elmundo.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias1","inputs":{"url_entrada":"www.elpais.com"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias2","inputs":{"url_entrada":"www.larazon.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias3","inputs":{"url_entrada":"www.abc.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias4","inputs":{"url_entrada":"www.20minutos.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias5","inputs":{"url_entrada":"www.adn.es"}},{"type":"Array.Concat","name":"concat","inputs":{"array1":"${noticiascategorias5}","array2":"${noticiascategorias4}"}},{"type":"Array.Concat","name":"concat1","inputs":{"array1":"${concat}","array2":"${noticiascategorias}","array3":"${noticiascategorias1}","array4":"${noticiascategorias2}","array5":"${noticiascategorias3}"}},{"type":"Renderer.GoogleMaps.GoogleMapsMarker","name":"googlemapsmarker","inputs":{"records":"${concat1}","labelField":"http://purl.org/dc/elements/1.1/title","valueField":"http://www.daml.org/experiment/ontology/location-ont#location","zoomController":"true","mapTypeController":"true"}}]});
+  var proc = new afrous.ProcessInstance(procdef);
+
+  proc.start(function(result) {
+    result.render(document.getElementById("mydiv"));
+  })
+
+}  
+
+function commentsAll(){
+  var procdef = new afrous.ProcessDef({"name":"","description":"","params":[],"output":"${pienewextractor}","actions":[{"type":"Services.Alacarta.Noticias","name":"noticiascategorias","inputs":{"url_entrada":"http://www.elmundo.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias1","inputs":{"url_entrada":"www.elpais.com"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias2","inputs":{"url_entrada":"www.larazon.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias3","inputs":{"url_entrada":"www.abc.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias4","inputs":{"url_entrada":"www.20minutos.es"}},{"type":"Services.Alacarta.Noticias","name":"noticiascategorias5","inputs":{"url_entrada":"www.adn.es"}},{"type":"Array.Concat","name":"concat","inputs":{"array1":"${noticiascategorias5}","array2":"${noticiascategorias4}"}},{"type":"Array.Concat","name":"concat1","inputs":{"array1":"${concat}","array2":"${noticiascategorias}","array3":"${noticiascategorias1}","array4":"${noticiascategorias2}","array5":"${noticiascategorias3}"}},{"type":"Renderer.Diagram.BarChartComments","name":"pienewextractor","inputs":{"records":"${concat1}"}}]});
+  var proc = new afrous.ProcessInstance(procdef);
+
+  proc.start(function(result) {
+    result.render(document.getElementById("mydiv"));
+  })
+
+}
+ 
+
+
+
+</script>
+
+<script type="text/javascript">
+  function graphics(){
+  
+  //Information of all pages: El Mundo, El Pais, La Razon, Abc, 20 Minutos, Adn.
+/*   authorsAll('authorsAll');
+  categoriesAll();
+  mapAll();
+  commentsAll()*/
+   
+<<<<<<< .mine
+<<<<<<< .mine
+    authors('http://www.elmundo.es', 'authorsElmundo');  
+    categories('http://www.elmundo.es', 'categoriesElMundo');
+    map('http://www.elmundo.es', 'mapElMundo');
+    comments('http://www.elmundo.es', 'commentsElMundo');
+=======
+/*   authors('http://www.elmundo.es', 'authorsElmundo');  
+=======
+   authors('http://www.elmundo.es', 'authorsElmundo');  
+>>>>>>> .r38
+   categories('http://www.elmundo.es', 'categoriesElMundo');
+   map('http://www.elmundo.es', 'mapElMundo');
+   comments('http://www.elmundo.es', 'commentsElMundo');
+>>>>>>> .r34
+    
+   
+<<<<<<< .mine
+<<<<<<< .mine
+ /*  authors('http://www.elpais.com','authorsElpais'); 
+   categories('http://www.elpais.com', 'categoriesElpais');
+   comments('http://www.pais.com','commentsElPais');
+   map('http://www.elpais.com', 'mapElpais');*/
+=======
+   /* authors('http://www.elpais.com','authorsElpais'); 
+    categories('http://www.elpais.com', 'categoriesElpais');
+    comments('http://www.elpais.com','commentsElpais');
+    map('http://www.elpais.com', 'mapElpais');*/
+=======
+   authors('http://www.elpais.com','authorsElpais'); 
+   categories('http://www.elpais.com', 'categoriesElpais');
+   comments('http://www.elpais.com','commentsElpais');
+   map('http://www.elpais.com', 'mapElpais');
+>>>>>>> .r38
+>>>>>>> .r34
+    
+<<<<<<< .mine
+   /* authors('http://www.larazon.es', 'authorsLarazon');  
+    categories('http://www.larazon.es', 'categoriesLarazon');*/
+  //  map('http://www.larazon.es', 'mapLarazon');
+/*    comments('http://www.larazon.es', 'commentsLarazon');
+=======
+   authors('http://www.larazon.es', 'authorsLarazon');  
+   categories('http://www.larazon.es', 'categoriesLarazon');
+   map('http://www.larazon.es', 'mapLarazon');
+   comments('http://www.larazon.es', 'commentsLarazon');
+>>>>>>> .r38
+
+<<<<<<< .mine
+/*    authors('http://www.abc.es', 'authorsAbc');  
+<<<<<<< .mine
+    categories('http://www.abc.es', 'categoriesAbc');*/
+   // map('http://www.abc.es', 'mapAbc');
+  /*  comments('http://www.abc.es', 'commentsAbc');
+=======
+    categories('http://www.abc.es', 'categoriesAbc');
+    map('http://www.abc.es', 'mapAbc');	*/
+=======
+   authors('http://www.abc.es', 'authorsAbc');  
+   categories('http://www.abc.es', 'categoriesAbc');
+   map('http://www.abc.es', 'mapAbc');	
+>>>>>>> .r38
+  // comments('http://www.abc.es', 'commentsAbc');  No comments for Abc
+>>>>>>> .r34
+  
+<<<<<<< .mine
+<<<<<<< .mine
+    authors('http://www.20minutos.es', 'authors20Minutos');  
+    categories('http://www.20minutos.es', 'categories20Minutos');*/
+//    map('http://www.20minutos.es', 'map20Minutos');
+   // comments('http://www.20minutos.es', 'comments20Minutos');
+=======
+  /*  authors('http://www.20minutos.es', 'authors20Minutos');  
+    categories('http://www.20minutos.es', 'categories20Minutos');*/
+=======
+   authors('http://www.20minutos.es', 'authors20Minutos');  
+   categories('http://www.20minutos.es', 'categories20Minutos');
+>>>>>>> .r38
+//   map('http://www.20minutos.es', 'map20Minutos'); No Map for 20 Minutos
+   comments('http://www.20minutos.es', 'comments20Minutos');
+>>>>>>> .r34
+
+<<<<<<< .mine
+<<<<<<< .mine
+  /*  authors('http://www.adn.es', 'authorsAdn');  
+    categories('http://www.adn.es', 'categoriesAdn');*/
+   // map('http://www.adn.es', 'mapAdn');
+//    comments('http://www.adn.es', 'commentsAdn');
+=======
+   /* authors('http://www.adn.es', 'authorsAdn');  
+=======
+   authors('http://www.adn.es', 'authorsAdn');  
+>>>>>>> .r38
+    categories('http://www.adn.es', 'categoriesAdn');
+   map('http://www.adn.es', 'mapAdn');
+   comments('http://www.adn.es', 'commentsAdn');
+>>>>>>> .r34
+
+}
+    
+
+</script>
+
+<head> <title> Contenidos a la carta </title> </head>
+
+<body>
+<script type="text/javascript">
+    $(document).ready(function(){
+        graphics();
+    });
+</script>
+    
+    <div id="wrapper">
+        <div id="logo"> 
+            <img class="gsiLogo" src="img/gsi.png">
+            <img class="alacartaLogo" src="img/alacarta.png">
+        </div>
+
+<div id="content">
+<ul class="tabs">  
+    <li><a href="#tab1">Todos</a></li>  
+    <li><a href="#tab2">El Mundo</a></li>  
+    <li><a href="#tab3">El Pa&iacute;s</a></li>  
+    <li><a href="#tab4">La Raz&oacute;n</a></li>  
+    <li><a href="#tab5">Abc</a></li>  
+    <li><a href="#tab6">20 Minutos</a></li>  
+    <li><a href="#tab7">Adn</a></li>  
+</ul>  
+  
+    <div class="tab_container">  
+        <div id="tab1" class="tab_content">  
+	             <div id="authorsAll" class="graphicsAuthors">
+		            <p class="authors title"> Autores de todos los peri&oacute;dicos</p>
+                 </div>
+                 <div id="categoriesAll" class="graphicsCategories">
+		            <p class="categories title"> Categor&iacute;as de todos los peri&oacute;dicos </p>
+                 </div>
+	             <div id="commentsAll" class="graphicsComments">
+		            <p class="comments title"> Comentarios de todos los peri&oacute;dicos </p>
+                 </div> 
+                <div id="mapAll" class="graphicsMap">
+		            <p class="map title"> Noticias de todos los peri&oacute;dicos </p>
+                </div>                    
+        </div>    
+          
+        <div id="tab2" class="tab_content">  
+                <div id="authorsElmundo" class="graphicsAuthors"> 
+		            <p class="authors title"> Autores de El Mundo </p>
+	            </div>
+	            <div id="categoriesElMundo" class="graphicsCategories">
+		            <p class="categories title"> Categor&iacute;as de El Mundo </p>
+                </div>
+                <div id="commentsElMundo" class="graphicsComments">
+		            <p class="comments title"> Comentarios de El Mundo </p>
+                </div>  
+                <div id="mapElMundo" class="graphicsMap">
+		            <p class="map title"> Mapa de las noticias de El Mundo </p>
+                </div>  
+                
+
+        </div>  
+        
+        <div id="tab3" class="tab_content">  
+                <div id="authorsElpais" class="graphicsAuthors">
+		            <p class="authors title"> Autores de El Pa&iacute;s </p>
+                </div>
+                <div id="categoriesElpais" class="graphicsCategories">
+		            <p class="categories title"> Categor&iacute;as de El Pa&iacute;s </p>
+                </div>
+	            <div id="commentsElpais" class="graphicsComments">
+		            <p class="comments title"> Comentarios de El Pa&iacute;s </p>
+                </div>
+                <div id="mapElpais" class="graphicsMap">
+		            <p class="map title"> Mapa de las noticias de El Pa&iacute;s </p>
+                </div>  
+        </div>  
+        
+        <div id="tab4" class="tab_content">  
+	             <div id="authorsLarazon" class="graphicsAuthors">
+		            <p class="authors title"> Autores de La Raz&oacute;n </p>
+                 </div>
+                 <div id="categoriesLarazon" class="graphicsCategories">
+		            <p class="categories title"> Categor&iacute;as de La Raz&oacute;n  </p>
+                 </div>
+	             <div id="commentsLarazon" class="graphicsComments">
+		            <p class="comments title"> Comentarios de La Raz&oacute;n </p>
+                 </div>
+                 <div id="mapLarazon" class="graphicsMap">
+		            <p class="map title"> Mapa de las noticias de La Raz&oacute;n</p>
+                </div>      
+        </div>  
+        
+        <div id="tab5" class="tab_content">  
+	             <div id="authorsAbc" class="graphicsAuthors">
+		            <p class="authors title"> Autores de ABC </p>
+                 </div>
+                 <div id="categoriesAbc" class="graphicsCategories">
+		            <p class="categories title"> Categor&iacute;as de ABC  </p>
+                 </div>
+	              <!--<div id="commentsAbc" class="graphicsComments">
+		            <p class="comments title"> Comentarios de ABC </p>
+                 </div> -->
+                 <div id="mapAbc" class="graphicsMap">
+		            <p class="map title"> Mapa de las noticias de ABC</p>
+                </div>    
+        </div>  
+        
+        <div id="tab6" class="tab_content"> 
+	             <div id="authors20Minutos" class="graphicsAuthors">
+		            <p class="authors title"> Autores de 20 Minutos </p>
+                 </div>
+                 <div id="categories20Minutos" class="graphicsCategories">
+		            <p class="categories title"> Categor&iacute;as de 20 Minutos  </p>
+                 </div>
+	             <div id="comments20Minutos" class="graphicsComments">
+		            <p class="comments title"> Mapa de las noticias 20 Minutos  </p>
+                 </div> 
+                 <!--<div id="map20Minutos" class="graphicsMap">
+		            <p class="map title"> Mapa de 20 Minutos</p>
+                </div>   -->
+        </div>  
+
+        <div id="tab7" class="tab_content">  
+	             <div id="authorsAdn" class="graphicsAuthors">
+		            <p class="authors title"> Autores de Adn </p>
+                 </div>
+                 <div id="categoriesAdn" class="graphicsCategories">
+		            <p class="categories title"> Categor&iacute;as de Adn </p>
+                 </div>
+	             <div id="commentsAdn" class="graphicsComments">
+		            <p class="comments title"> Comentarios de Adn</p>
+                 </div> 
+                 <div id="mapAdn" class="graphicsMap">
+		            <p class="map title"> Mapa de las noticias de Adn</p>
+                </div>  
+        </div>  
+</div>  
+</div>
+</div>
+</div>
+
+</body>
+
+</html>

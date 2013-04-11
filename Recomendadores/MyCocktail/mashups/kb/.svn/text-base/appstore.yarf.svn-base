@@ -1,0 +1,140 @@
+dc: http://purl.org/dc/elements/1.1/
+owl: http://www.w3.org/2002/07/owl#
+rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+rdfs: http://www.w3.org/2000/01/rdf-schema#
+sioc: http://rdfs.org/sioc/ns#
+sc: http://lab.gsi.dit.upm.es/scraping.rdf#
+vu: http://vulneranet.org/vulneranet.owl#
+om: http://www.ict-omelette.eu/schema.rdf#
+ctag: http://commontag.org/ns#
+
+# Main page
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriSelector
+      rdf:value: "http://itunes.apple.com/us/genre/ios/id36"
+  sc:subfragment:
+    *:
+      sc:type: sc:Index
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "#genre-nav a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+      sc:subfragment:
+        *:
+          sc:type: rdf:Literal
+          sc:relation: rdfs:label
+          sc:selector:
+            *:
+              rdf:type: sc:RootSelector
+
+# Category page
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://itunes.apple.com/us/genre/ios-*"
+  sc:subfragment:
+    *:
+      sc:type: om:Application
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "#selectedcontent a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+#
+# Uncomment the fragment below to crawl all apps
+#
+    *:
+      sc:type: sc:Page
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "ul.list.alpha a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+
+# App page
+*:
+  rdf:type: sc:Fragment
+  sc:selector:
+    *:
+      rdf:type: sc:UriPatternSelector
+      rdf:value: "http://itunes.apple.com/us/app/*"
+  sc:identifier:
+    *:
+      rdf:type: sc:BaseUriSelector
+  sc:subfragment:
+    *:
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "#selectedcontent a"
+      sc:identifier:
+        *:
+          rdf:type: sc:RootSelector
+          sc:attribute: "href"
+    *:
+      sc:type: rdf:Literal
+      sc:relation: dc:description
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".product-review p"
+          sc:index: "0"
+    *:
+      sc:type: rdf:Literal
+      sc:relation: dc:title
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "#title h1"
+    *:
+      sc:type: rdf:Literal
+      sc:relation: dc:creator
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "#title h2"
+          sc:selector:
+            *:
+              rdf:type: sc:SliceSelector
+              rdf:value: "By"
+              sc:index: "1"
+    *:
+      sc:relation: rdf:type
+      sc:superclass: om:Application
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: ".genre a"
+      sc:identifier:
+        *:
+          rdf:type: sc:NewUriSelector
+          sc:prefix: http://www.ict-omelette.eu/schema.rdf#
+    *:
+      sc:type: rdf:Literal
+      sc:relation: dc:rating
+      sc:selector:
+        *:
+          rdf:type: sc:CssSelector
+          rdf:value: "#left-stack .rating"
+          sc:index: "0"
+          sc:attribute: "aria-label"
+          sc:selector:
+            *:
+              rdf:type: sc:SliceSelector
+              rdf:value: " "
+              sc:index: "0"
